@@ -46,23 +46,23 @@ const Index = () => {
       case 'remote-monitoring':
         return <RemoteMonitoring user={user} onLogout={handleLogout} setCurrentPage={setCurrentPage} />;
       case 'health-records':
-        return <HealthRecords user={user} onLogout={handleLogout} setCurrentPage={setCurrentPage} />;
+        return <EnhancedHealthRecords user={user} onLogout={handleLogout} setCurrentPage={setCurrentPage} />;
       case 'ai-diagnostics':
         return <AIDiagnostics user={user} onLogout={handleLogout} setCurrentPage={setCurrentPage} />;
       case 'appointments':
         return <Appointments user={user} onLogout={handleLogout} setCurrentPage={setCurrentPage} />;
       case 'health-data-entry':
-        return <HealthDataEntry user={user} onLogout={handleLogout} setCurrentPage={setCurrentPage} />;
+        return <CalendarHealthData user={user} onLogout={handleLogout} setCurrentPage={setCurrentPage} />;
       case 'appointment-scheduling':
         return <AppointmentScheduling user={user} onLogout={handleLogout} setCurrentPage={setCurrentPage} />;
       case 'settings':
-        return <Settings user={user} onLogout={handleLogout} setCurrentPage={setCurrentPage} />;
+        return <EnhancedSettings user={user} onLogout={handleLogout} setCurrentPage={setCurrentPage} />;
       case 'notifications':
         return <Notifications user={user} onLogout={handleLogout} setCurrentPage={setCurrentPage} />;
       case 'doctor-consultation':
-        return <DoctorConsultation user={user} onLogout={handleLogout} setCurrentPage={setCurrentPage} />;
+        return <EnhancedDoctorConsultation user={user} onLogout={handleLogout} setCurrentPage={setCurrentPage} />;
       default:
-        return <Dashboard user={user} onLogout={handleLogout} setCurrentPage={setCurrentPage} />;
+        return <SidebarDashboard user={user} onLogout={handleLogout} setCurrentPage={setCurrentPage} />;
     }
   };
 
