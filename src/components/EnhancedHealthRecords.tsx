@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -46,8 +45,8 @@ const EnhancedHealthRecords = ({ user, onLogout, setCurrentPage }) => {
     return { label: 'High', color: 'text-red-600', bg: 'bg-red-100' };
   };
 
-  const handleFileUpload = (event) => {
-    const files = Array.from(event.target.files);
+  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(event.target.files || []);
     files.forEach(file => {
       const newFile = {
         id: Date.now() + Math.random(),
@@ -62,10 +61,22 @@ const EnhancedHealthRecords = ({ user, onLogout, setCurrentPage }) => {
     });
   };
 
-  const handleDrop = (event) => {
+  const handleDrop = (event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault();
     setDragOver(false);
-    handleFileUpload(event);
+    const files = Array.from(event.dataTransfer.files);
+    files.forEach(file => {
+      const newFile = {
+        id: Date.now() + Math.random(),
+        name: file.name,
+        type: 'Medical Record',
+        date: new Date().toISOString().split('T')[0],
+        size: `${(file.size / (1024 * 1024)).toFixed(1)} MB`,
+        severity: Math.floor(Math.random() * 10) + 1,
+        doctor: 'Self-uploaded'
+      };
+      setUploadedFiles(prev => [...prev, newFile]);
+    });
   };
 
   const filteredFiles = uploadedFiles.filter(file =>

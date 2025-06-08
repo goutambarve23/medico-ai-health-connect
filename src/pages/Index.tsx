@@ -11,13 +11,18 @@ import Dashboard from '../components/Dashboard';
 import VirtualAssistant from '../components/VirtualAssistant';
 import RemoteMonitoring from '../components/RemoteMonitoring';
 import HealthRecords from '../components/HealthRecords';
+import EnhancedHealthRecords from '../components/EnhancedHealthRecords';
 import AIDiagnostics from '../components/AIDiagnostics';
 import Appointments from '../components/Appointments';
 import HealthDataEntry from '../components/HealthDataEntry';
+import CalendarHealthData from '../components/CalendarHealthData';
 import AppointmentScheduling from '../components/AppointmentScheduling';
 import Settings from '../components/Settings';
+import EnhancedSettings from '../components/EnhancedSettings';
 import Notifications from '../components/Notifications';
 import DoctorConsultation from '../components/DoctorConsultation';
+import EnhancedDoctorConsultation from '../components/EnhancedDoctorConsultation';
+import SidebarDashboard from '../components/SidebarDashboard';
 
 const Index = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
