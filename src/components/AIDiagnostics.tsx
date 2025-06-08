@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { Heart, LogOut, Brain, Activity, AlertTriangle, CheckCircle, Upload, Scan, TrendingUp, Target } from 'lucide-react';
+import { Heart, LogOut, Brain, Activity, AlertTriangle, CheckCircle, Upload, Scan, TrendingUp, Target, Lightbulb, BookOpen } from 'lucide-react';
 
 const AIDiagnostics = ({ user, onLogout, setCurrentPage }) => {
   const [symptoms, setSymptoms] = useState('');
@@ -26,6 +26,12 @@ const AIDiagnostics = ({ user, onLogout, setCurrentPage }) => {
           'Consider over-the-counter pain relief if needed',
           'Consult healthcare provider if symptoms worsen'
         ],
+        healthTips: [
+          'Drink warm water with honey and lemon to soothe throat irritation',
+          'Practice deep breathing exercises to reduce stress and improve circulation',
+          'Maintain a consistent sleep schedule of 7-9 hours for better recovery',
+          'Include anti-inflammatory foods like turmeric and ginger in your diet'
+        ],
         similarCases: 142,
         urgency: 'Non-urgent'
       });
@@ -44,19 +50,22 @@ const AIDiagnostics = ({ user, onLogout, setCurrentPage }) => {
       title: 'Sleep Pattern Analysis', 
       score: 85, 
       trend: 'improving',
-      insight: 'Your sleep quality has improved by 15% this month'
+      insight: 'Your sleep quality has improved by 15% this month',
+      tips: ['Maintain consistent bedtime', 'Avoid caffeine after 2 PM', 'Create a relaxing bedtime routine']
     },
     { 
       title: 'Stress Level Assessment', 
       score: 72, 
       trend: 'stable',
-      insight: 'Stress levels are within normal range'
+      insight: 'Stress levels are within normal range',
+      tips: ['Practice meditation daily', 'Take regular breaks during work', 'Engage in physical activities']
     },
     { 
       title: 'Activity Level Review', 
       score: 91, 
       trend: 'excellent',
-      insight: 'You\'re meeting all your activity goals consistently'
+      insight: 'You\'re meeting all your activity goals consistently',
+      tips: ['Continue current exercise routine', 'Add variety with new activities', 'Consider strength training']
     },
   ];
 
@@ -197,6 +206,31 @@ const AIDiagnostics = ({ user, onLogout, setCurrentPage }) => {
           </Card>
         </div>
 
+        {/* Health Tips After Diagnosis */}
+        {analysisResult && (
+          <Card className="mb-8">
+            <CardHeader>
+              <CardTitle className="flex items-center space-x-2">
+                <Lightbulb className="h-5 w-5 text-yellow-600" />
+                <span>Personalized Health Tips</span>
+              </CardTitle>
+              <CardDescription>Based on your current analysis, here are some helpful tips</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {analysisResult.healthTips.map((tip, index) => (
+                  <div key={index} className="p-4 bg-gradient-to-r from-yellow-50 to-orange-50 rounded-lg border border-yellow-200">
+                    <div className="flex items-start space-x-3">
+                      <BookOpen className="h-5 w-5 text-yellow-600 mt-0.5" />
+                      <p className="text-sm text-gray-700">{tip}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
         {/* Health Insights */}
         <Card className="mb-8">
           <CardHeader>
@@ -225,7 +259,13 @@ const AIDiagnostics = ({ user, onLogout, setCurrentPage }) => {
                       <span className="text-sm font-medium">{insight.score}%</span>
                     </div>
                   </div>
-                  <p className="text-sm text-gray-600">{insight.insight}</p>
+                  <p className="text-sm text-gray-600 mb-3">{insight.insight}</p>
+                  <div className="space-y-2">
+                    <h5 className="text-xs font-medium text-gray-800">Tips:</h5>
+                    {insight.tips.map((tip, tipIndex) => (
+                      <p key={tipIndex} className="text-xs text-gray-600">• {tip}</p>
+                    ))}
+                  </div>
                 </div>
               ))}
             </div>

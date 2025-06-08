@@ -1,27 +1,45 @@
+
+import { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Heart, Search, Bell, LogOut, Activity, Calendar, FileText, Settings, Bot, Monitor, Brain, Shield, Plus, TrendingUp, Users, AlertCircle, Stethoscope, Edit } from 'lucide-react';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Heart, Calendar, FileText, Activity, Settings as SettingsIcon, LogOut, Bell, Search, Plus, Bot, Monitor, Brain, Shield, MessageCircle, TrendingUp } from 'lucide-react';
 
 const Dashboard = ({ user, onLogout, setCurrentPage }) => {
+  const [notifications] = useState([
+    { id: 1, message: "Remember to take your evening medication", time: "6:00 PM", type: "medication" },
+    { id: 2, message: "Drink water - you're behind on your daily goal", time: "2:30 PM", type: "health-tip" },
+    { id: 3, message: "Great job completing today's exercise!", time: "10:00 AM", type: "achievement" }
+  ]);
+
+  const healthTips = [
+    "Regular exercise can reduce your risk of chronic diseases by up to 50%",
+    "Stay hydrated - drink at least 8 glasses of water daily",
+    "Get 7-9 hours of quality sleep for optimal health",
+    "Eat colorful fruits and vegetables to boost your immune system"
+  ];
+
   const menuItems = [
-    { id: 'dashboard', label: 'Dashboard', icon: Activity, color: 'text-blue-600' },
-    { id: 'virtual-assistant', label: 'AI Assistant', icon: Bot, color: 'text-purple-600' },
-    { id: 'remote-monitoring', label: 'Remote Monitoring', icon: Monitor, color: 'text-green-600' },
-    { id: 'health-records', label: 'Health Records', icon: FileText, color: 'text-orange-600' },
-    { id: 'ai-diagnostics', label: 'AI Diagnostics', icon: Brain, color: 'text-red-600' },
-    { id: 'appointments', label: 'Appointments', icon: Calendar, color: 'text-indigo-600' },
-    { id: 'health-data-entry', label: 'Health Data Entry', icon: Edit, color: 'text-pink-600' },
-    { id: 'settings', label: 'Settings', icon: Settings, color: 'text-gray-600' },
+    { id: 'virtual-assistant', label: 'AI Health Assistant', icon: Bot, description: 'Chat with AI for health advice' },
+    { id: 'remote-monitoring', label: 'Remote Monitoring', icon: Monitor, description: 'Track vital signs remotely' },
+    { id: 'health-records', label: 'Health Records', icon: FileText, description: 'Manage medical records' },
+    { id: 'ai-diagnostics', label: 'AI Diagnostics', icon: Brain, description: 'AI-powered health analysis' },
+    { id: 'appointments', label: 'Appointments', icon: Calendar, description: 'View scheduled appointments' },
+    { id: 'health-data-entry', label: 'Health Data Entry', icon: Activity, description: 'Log vital signs & activities' },
+    { id: 'doctor-consultation', label: 'Doctor Consultation', icon: MessageCircle, description: 'Chat with doctors online' },
+    { id: 'notifications', label: 'Notifications', icon: Bell, description: 'Health tips & reminders' },
+    { id: 'settings', label: 'Settings', icon: SettingsIcon, description: 'Account & app preferences' },
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50">
-      <header className="bg-white/80 backdrop-blur-sm shadow-sm border-b sticky top-0 z-50">
+    <div className="min-h-screen bg-gray-50">
+      {/* Header */}
+      <header className="bg-white shadow-sm border-b">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center space-x-3">
-              <div className="p-2 bg-gradient-to-r from-blue-500 to-green-500 rounded-lg shadow-lg">
+              <div className="p-2 bg-gradient-to-r from-blue-500 to-green-500 rounded-lg">
                 <Heart className="h-6 w-6 text-white" />
               </div>
               <div>
@@ -38,12 +56,21 @@ const Dashboard = ({ user, onLogout, setCurrentPage }) => {
                 <Input
                   type="text"
                   placeholder="Search health data..."
-                  className="pl-10 w-64 bg-white/70"
+                  className="pl-10 w-64"
                 />
               </div>
-              <Button variant="ghost" size="sm" className="relative">
+              <Button 
+                variant="ghost" 
+                size="sm"
+                onClick={() => setCurrentPage('notifications')}
+                className="relative"
+              >
                 <Bell className="h-5 w-5" />
-                <span className="absolute -top-1 -right-1 h-3 w-3 bg-red-500 rounded-full"></span>
+                {notifications.length > 0 && (
+                  <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">
+                    {notifications.length}
+                  </span>
+                )}
               </Button>
               <div className="flex items-center space-x-2">
                 <span className="text-sm font-medium">Welcome, {user.name}</span>
@@ -56,247 +83,144 @@ const Dashboard = ({ user, onLogout, setCurrentPage }) => {
         </div>
       </header>
 
-      <div className="flex">
-        <div className="w-64 bg-white/80 backdrop-blur-sm shadow-sm min-h-screen border-r">
-          <nav className="p-4">
-            <div className="space-y-2">
-              {menuItems.map((item) => (
-                <Button
-                  key={item.id}
-                  variant={item.id === 'dashboard' ? 'default' : 'ghost'}
-                  className={`w-full justify-start transition-all duration-200 ${
-                    item.id === 'dashboard' 
-                      ? 'bg-gradient-to-r from-blue-500 to-green-500 text-white shadow-lg' 
-                      : 'hover:bg-blue-50'
-                  }`}
-                  onClick={() => setCurrentPage(item.id)}
-                >
-                  <item.icon className={`mr-3 h-4 w-4 ${item.id === 'dashboard' ? 'text-white' : item.color}`} />
-                  {item.label}
-                </Button>
-              ))}
-            </div>
-          </nav>
+      <div className="max-w-7xl mx-auto p-8">
+        <div className="mb-8">
+          <h2 className="text-3xl font-bold text-gray-900">Health Dashboard</h2>
+          <p className="text-gray-600 mt-2">Monitor your health metrics and access AI-powered healthcare features</p>
         </div>
 
-        <div className="flex-1 p-8">
-          <div className="max-w-6xl mx-auto">
-            <div className="mb-8">
-              <h2 className="text-3xl font-bold text-gray-900">AI Health Dashboard</h2>
-              <p className="text-gray-600 mt-2">Monitor your health with intelligent insights and real-time data</p>
-            </div>
-
-            {/* Quick Stats */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-              <Card className="bg-gradient-to-br from-red-50 to-red-100 border-red-200">
-                <CardContent className="p-6">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-sm font-medium text-red-700">Heart Rate</p>
-                      <p className="text-2xl font-bold text-red-600">72 BPM</p>
-                      <p className="text-xs text-red-500">Normal range</p>
-                    </div>
-                    <Heart className="h-8 w-8 text-red-500" />
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card className="bg-gradient-to-br from-blue-50 to-blue-100 border-blue-200">
-                <CardContent className="p-6">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-sm font-medium text-blue-700">Next Appointment</p>
-                      <p className="text-2xl font-bold text-blue-600">Today</p>
-                      <p className="text-xs text-blue-500">2:30 PM</p>
-                    </div>
-                    <Calendar className="h-8 w-8 text-blue-500" />
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card className="bg-gradient-to-br from-green-50 to-green-100 border-green-200">
-                <CardContent className="p-6">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-sm font-medium text-green-700">Health Score</p>
-                      <p className="text-2xl font-bold text-green-600">85%</p>
-                      <p className="text-xs text-green-500">Excellent</p>
-                    </div>
-                    <TrendingUp className="h-8 w-8 text-green-500" />
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card className="bg-gradient-to-br from-purple-50 to-purple-100 border-purple-200">
-                <CardContent className="p-6">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-sm font-medium text-purple-700">AI Insights</p>
-                      <p className="text-2xl font-bold text-purple-600">3 New</p>
-                      <p className="text-xs text-purple-500">Recommendations</p>
-                    </div>
-                    <Brain className="h-8 w-8 text-purple-500" />
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-
-            {/* Feature Cards */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-              <Card className="hover:shadow-lg transition-shadow cursor-pointer" onClick={() => setCurrentPage('virtual-assistant')}>
-                <CardHeader>
-                  <div className="flex items-center space-x-3">
-                    <div className="p-2 bg-purple-100 rounded-lg">
-                      <Bot className="h-6 w-6 text-purple-600" />
-                    </div>
-                    <div>
-                      <CardTitle>Virtual Health Assistant</CardTitle>
-                      <CardDescription>Get instant health advice and support</CardDescription>
-                    </div>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-sm text-gray-600">Ask questions about your health, get medication reminders, and receive personalized health tips powered by AI.</p>
-                  <Button className="mt-4 w-full" variant="outline">
-                    Chat with AI Assistant
-                  </Button>
-                </CardContent>
-              </Card>
-
-              <Card className="hover:shadow-lg transition-shadow cursor-pointer" onClick={() => setCurrentPage('remote-monitoring')}>
-                <CardHeader>
-                  <div className="flex items-center space-x-3">
-                    <div className="p-2 bg-green-100 rounded-lg">
-                      <Monitor className="h-6 w-6 text-green-600" />
-                    </div>
-                    <div>
-                      <CardTitle>Remote Health Monitoring</CardTitle>
-                      <CardDescription>Track vitals and health metrics</CardDescription>
-                    </div>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-sm text-gray-600">Monitor your vital signs, track symptoms, and share real-time health data with your healthcare providers.</p>
-                  <Button className="mt-4 w-full" variant="outline">
-                    View Health Metrics
-                  </Button>
-                </CardContent>
-              </Card>
-
-              <Card className="hover:shadow-lg transition-shadow cursor-pointer" onClick={() => setCurrentPage('health-records')}>
-                <CardHeader>
-                  <div className="flex items-center space-x-3">
-                    <div className="p-2 bg-orange-100 rounded-lg">
-                      <Shield className="h-6 w-6 text-orange-600" />
-                    </div>
-                    <div>
-                      <CardTitle>Health Record Management</CardTitle>
-                      <CardDescription>Secure access to your medical history</CardDescription>
-                    </div>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-sm text-gray-600">Access your complete medical history, lab results, prescriptions, and share records securely with providers.</p>
-                  <Button className="mt-4 w-full" variant="outline">
-                    Manage Records
-                  </Button>
-                </CardContent>
-              </Card>
-
-              <Card className="hover:shadow-lg transition-shadow cursor-pointer" onClick={() => setCurrentPage('health-data-entry')}>
-                <CardHeader>
-                  <div className="flex items-center space-x-3">
-                    <div className="p-2 bg-pink-100 rounded-lg">
-                      <Edit className="h-6 w-6 text-pink-600" />
-                    </div>
-                    <div>
-                      <CardTitle>Manual Health Data Entry</CardTitle>
-                      <CardDescription>Input vitals for AI diagnosis</CardDescription>
-                    </div>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-sm text-gray-600">Manually enter your heart rate, oxygen levels, weight, and height to get AI-powered health insights and recommendations.</p>
-                  <Button className="mt-4 w-full" variant="outline">
-                    Enter Health Data
-                  </Button>
-                </CardContent>
-              </Card>
-            </div>
-
-            {/* Quick Actions */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-              <Card className="hover:shadow-lg transition-shadow cursor-pointer" onClick={() => setCurrentPage('appointment-scheduling')}>
-                <CardHeader>
-                  <CardTitle className="flex items-center space-x-2">
-                    <Stethoscope className="h-5 w-5 text-blue-600" />
-                    <span>Schedule New Appointment</span>
-                  </CardTitle>
-                  <CardDescription>Book your next medical appointment</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-sm text-gray-600 mb-4">Easily schedule appointments with your healthcare providers with our streamlined booking system.</p>
-                  <Button className="w-full bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-blue-600 hover:to-indigo-600">
-                    <Plus className="mr-2 h-4 w-4" />
-                    Schedule Appointment
-                  </Button>
-                </CardContent>
-              </Card>
-
-              <Card className="hover:shadow-lg transition-shadow cursor-pointer" onClick={() => setCurrentPage('ai-diagnostics')}>
-                <CardHeader>
-                  <div className="flex items-center space-x-3">
-                    <div className="p-2 bg-red-100 rounded-lg">
-                      <Brain className="h-6 w-6 text-red-600" />
-                    </div>
-                    <div>
-                      <CardTitle>AI-Powered Diagnostics</CardTitle>
-                      <CardDescription>Advanced health analysis and insights</CardDescription>
-                    </div>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-sm text-gray-600">Get AI-powered health assessments, risk analysis, and early detection insights based on your health data.</p>
-                  <Button className="mt-4 w-full" variant="outline">
-                    Get AI Analysis
-                  </Button>
-                </CardContent>
-              </Card>
-            </div>
-
-            {/* Recent Activity */}
-            <Card>
-              <CardHeader>
-                <CardTitle>Recent Health Activity</CardTitle>
-                <CardDescription>Your latest health interactions and updates</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  <div className="flex items-center space-x-3 p-3 bg-blue-50 rounded-lg">
-                    <Calendar className="h-5 w-5 text-blue-600" />
-                    <div>
-                      <p className="font-medium">Appointment with Dr. Johnson</p>
-                      <p className="text-sm text-gray-600">Today at 2:30 PM - General Checkup</p>
-                    </div>
-                  </div>
-                  <div className="flex items-center space-x-3 p-3 bg-green-50 rounded-lg">
-                    <Activity className="h-5 w-5 text-green-600" />
-                    <div>
-                      <p className="font-medium">Health metrics updated</p>
-                      <p className="text-sm text-gray-600">Blood pressure and heart rate recorded</p>
-                    </div>
-                  </div>
-                  <div className="flex items-center space-x-3 p-3 bg-purple-50 rounded-lg">
-                    <Bot className="h-5 w-5 text-purple-600" />
-                    <div>
-                      <p className="font-medium">AI Health Insight</p>
-                      <p className="text-sm text-gray-600">New recommendation for better sleep hygiene</p>
-                    </div>
-                  </div>
+        {/* Quick Access Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+          <Card className="cursor-pointer hover:shadow-lg transition-shadow" onClick={() => setCurrentPage('virtual-assistant')}>
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-medium text-gray-600">AI Assistant</p>
+                  <p className="text-2xl font-bold text-purple-600">Available</p>
                 </div>
-              </CardContent>
+                <Bot className="h-8 w-8 text-purple-500" />
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="cursor-pointer hover:shadow-lg transition-shadow" onClick={() => setCurrentPage('health-data-entry')}>
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-medium text-gray-600">Heart Rate</p>
+                  <p className="text-2xl font-bold text-red-600">72 BPM</p>
+                </div>
+                <Heart className="h-8 w-8 text-red-500" />
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="cursor-pointer hover:shadow-lg transition-shadow" onClick={() => setCurrentPage('appointments')}>
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-medium text-gray-600">Next Appointment</p>
+                  <p className="text-2xl font-bold text-blue-600">Today</p>
+                </div>
+                <Calendar className="h-8 w-8 text-blue-500" />
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="cursor-pointer hover:shadow-lg transition-shadow" onClick={() => setCurrentPage('ai-diagnostics')}>
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-medium text-gray-600">Health Score</p>
+                  <p className="text-2xl font-bold text-green-600">85%</p>
+                </div>
+                <TrendingUp className="h-8 w-8 text-green-500" />
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Main Features Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+          {menuItems.map((item) => (
+            <Card 
+              key={item.id} 
+              className="cursor-pointer hover:shadow-lg transition-all duration-200 hover:scale-105"
+              onClick={() => setCurrentPage(item.id)}
+            >
+              <CardHeader className="pb-3">
+                <CardTitle className="flex items-center space-x-3">
+                  <div className="p-2 bg-gradient-to-r from-blue-500 to-green-500 rounded-lg">
+                    <item.icon className="h-5 w-5 text-white" />
+                  </div>
+                  <span className="text-lg">{item.label}</span>
+                </CardTitle>
+                <CardDescription>{item.description}</CardDescription>
+              </CardHeader>
             </Card>
-          </div>
+          ))}
+        </div>
+
+        {/* Recent Activity & Health Tips */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <Card>
+            <CardHeader>
+              <CardTitle>Recent Notifications</CardTitle>
+              <CardDescription>Your latest health alerts and reminders</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                {notifications.map((notification) => (
+                  <div key={notification.id} className="flex items-center justify-between p-3 bg-blue-50 rounded-lg">
+                    <div className="flex items-center space-x-3">
+                      <Bell className="h-4 w-4 text-blue-600" />
+                      <div>
+                        <p className="font-medium text-sm">{notification.message}</p>
+                        <p className="text-xs text-gray-600">{notification.time}</p>
+                      </div>
+                    </div>
+                    <span className={`px-2 py-1 rounded-full text-xs ${
+                      notification.type === 'medication' ? 'bg-red-100 text-red-800' :
+                      notification.type === 'health-tip' ? 'bg-blue-100 text-blue-800' :
+                      'bg-green-100 text-green-800'
+                    }`}>
+                      {notification.type}
+                    </span>
+                  </div>
+                ))}
+                <Button 
+                  variant="outline" 
+                  className="w-full"
+                  onClick={() => setCurrentPage('notifications')}
+                >
+                  View All Notifications
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle>Daily Health Tips</CardTitle>
+              <CardDescription>AI-powered tips for better health</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                {healthTips.map((tip, index) => (
+                  <div key={index} className="p-3 bg-gradient-to-r from-green-50 to-blue-50 rounded-lg border border-green-200">
+                    <p className="text-sm text-gray-700">💡 {tip}</p>
+                  </div>
+                ))}
+                <Button 
+                  variant="outline" 
+                  className="w-full"
+                  onClick={() => setCurrentPage('virtual-assistant')}
+                >
+                  Get More Health Tips
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
         </div>
       </div>
     </div>

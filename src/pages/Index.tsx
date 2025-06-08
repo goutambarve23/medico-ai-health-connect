@@ -16,6 +16,8 @@ import Appointments from '../components/Appointments';
 import HealthDataEntry from '../components/HealthDataEntry';
 import AppointmentScheduling from '../components/AppointmentScheduling';
 import Settings from '../components/Settings';
+import Notifications from '../components/Notifications';
+import DoctorConsultation from '../components/DoctorConsultation';
 
 const Index = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -55,6 +57,10 @@ const Index = () => {
         return <AppointmentScheduling user={user} onLogout={handleLogout} setCurrentPage={setCurrentPage} />;
       case 'settings':
         return <Settings user={user} onLogout={handleLogout} setCurrentPage={setCurrentPage} />;
+      case 'notifications':
+        return <Notifications user={user} onLogout={handleLogout} setCurrentPage={setCurrentPage} />;
+      case 'doctor-consultation':
+        return <DoctorConsultation user={user} onLogout={handleLogout} setCurrentPage={setCurrentPage} />;
       default:
         return <Dashboard user={user} onLogout={handleLogout} setCurrentPage={setCurrentPage} />;
     }
