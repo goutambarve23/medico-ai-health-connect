@@ -1,8 +1,7 @@
-
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Heart, Search, Bell, LogOut, Activity, Calendar, FileText, Settings, Bot, Monitor, Brain, Shield, Plus, TrendingUp, Users, AlertCircle } from 'lucide-react';
+import { Heart, Search, Bell, LogOut, Activity, Calendar, FileText, Settings, Bot, Monitor, Brain, Shield, Plus, TrendingUp, Users, AlertCircle, Stethoscope, Edit } from 'lucide-react';
 
 const Dashboard = ({ user, onLogout, setCurrentPage }) => {
   const menuItems = [
@@ -12,6 +11,7 @@ const Dashboard = ({ user, onLogout, setCurrentPage }) => {
     { id: 'health-records', label: 'Health Records', icon: FileText, color: 'text-orange-600' },
     { id: 'ai-diagnostics', label: 'AI Diagnostics', icon: Brain, color: 'text-red-600' },
     { id: 'appointments', label: 'Appointments', icon: Calendar, color: 'text-indigo-600' },
+    { id: 'health-data-entry', label: 'Health Data Entry', icon: Edit, color: 'text-pink-600' },
     { id: 'settings', label: 'Settings', icon: Settings, color: 'text-gray-600' },
   ];
 
@@ -199,6 +199,46 @@ const Dashboard = ({ user, onLogout, setCurrentPage }) => {
                   <p className="text-sm text-gray-600">Access your complete medical history, lab results, prescriptions, and share records securely with providers.</p>
                   <Button className="mt-4 w-full" variant="outline">
                     Manage Records
+                  </Button>
+                </CardContent>
+              </Card>
+
+              <Card className="hover:shadow-lg transition-shadow cursor-pointer" onClick={() => setCurrentPage('health-data-entry')}>
+                <CardHeader>
+                  <div className="flex items-center space-x-3">
+                    <div className="p-2 bg-pink-100 rounded-lg">
+                      <Edit className="h-6 w-6 text-pink-600" />
+                    </div>
+                    <div>
+                      <CardTitle>Manual Health Data Entry</CardTitle>
+                      <CardDescription>Input vitals for AI diagnosis</CardDescription>
+                    </div>
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-sm text-gray-600">Manually enter your heart rate, oxygen levels, weight, and height to get AI-powered health insights and recommendations.</p>
+                  <Button className="mt-4 w-full" variant="outline">
+                    Enter Health Data
+                  </Button>
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* Quick Actions */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+              <Card className="hover:shadow-lg transition-shadow cursor-pointer" onClick={() => setCurrentPage('appointment-scheduling')}>
+                <CardHeader>
+                  <CardTitle className="flex items-center space-x-2">
+                    <Stethoscope className="h-5 w-5 text-blue-600" />
+                    <span>Schedule New Appointment</span>
+                  </CardTitle>
+                  <CardDescription>Book your next medical appointment</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-sm text-gray-600 mb-4">Easily schedule appointments with your healthcare providers with our streamlined booking system.</p>
+                  <Button className="w-full bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-blue-600 hover:to-indigo-600">
+                    <Plus className="mr-2 h-4 w-4" />
+                    Schedule Appointment
                   </Button>
                 </CardContent>
               </Card>
