@@ -299,7 +299,7 @@ const HealthDataEntry = ({ user, onLogout, setCurrentPage }) => {
                 <div className="p-3 bg-blue-50 rounded-lg">
                   <p className="text-sm font-medium">Calculated BMI:</p>
                   <p className="text-lg font-bold text-blue-600">
-                    {((healthData.weight / ((healthData.height / 100) ** 2))).toFixed(1)}
+                    {((parseFloat(healthData.weight) / ((parseFloat(healthData.height) / 100) ** 2))).toFixed(1)}
                   </p>
                 </div>
               )}
